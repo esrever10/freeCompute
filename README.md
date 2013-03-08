@@ -1,15 +1,13 @@
 freeCompute
+一个练习语法分析的程序  
 ===========
 
-grammatical analysis demo
+###主要任务：
+1. 建立栈；
+2. 实现getoken分解输入流；
+3. 利用栈转中缀式为后缀式；
+4. 利用栈进行后缀表达式求值；
+5. 实现另一种思路，利用语法树直接对中缀表达式求值，无需转后缀式；
+6. 支持变量声明等语法；
 
-###High Level Requirements
----
-1.To construct a stack structure.
-
-2.Using the stack to implement  infix expression  and calculate.
-
-3.Using the stack to implement  postfix expression  and calculate.
-
-4.Using the stack to implement infix into postfix and calculate.
 
