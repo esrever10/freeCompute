@@ -4,6 +4,7 @@
 	> Mail: god_mode@yeah.net
 	> Created Time: Mon Apr 29 21:57:57 2013
  ************************************************************************/
+#include "token.h"
 typedef int (*Matcher)(void);
 extern char* CURSOR;
 static Matcher matchers[256];
@@ -44,7 +45,7 @@ void InitLexer(void)
 	matchers['/'] = matchMinus;
 }
 
-void getNextToken()
+int getNextToken()
 {
-	(matchers[*CURSOR])();	
+	return (matchers[*CURSOR])();	
 }

@@ -6,6 +6,7 @@
  ************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
+#include "parser.h"
 
 #define LINE_MAX 256
 
@@ -16,37 +17,15 @@ void help()
 	printf("Welcome to freeCompute!\n");
 }
 
-/*
-Statement:
-	Expression
-
-Expression:
-	Term
-	Expression + Term
-	Expression - Term
-
-Term:
-	Primary
-	Term * Primary
-	Term / Primary
-
-Primary:
-	Number
-	( Expression )
-	- Primary
-	+ Primary
-
-Number:
-	float
-*/
 void processOneLine()
 {
-	
+	printf("%lf\n",statement());
 }
 
 int main(int argc, char*argv[])
 {
 	if (1 == argc){
+		InitLexer();
 		char *line = (char*)malloc(LINE_MAX);
 		help();
 		printf(">>>");
