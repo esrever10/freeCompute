@@ -1,5 +1,5 @@
 /*************************************************************************
-	> File Name: main.c
+	> File Name: main.cc
 	> Author: ellochen
 	> Mail: god_mode@yeah.net
 	> Created Time: Mon Apr 29 21:36:12 2013
