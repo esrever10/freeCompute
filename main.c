@@ -9,11 +9,52 @@
 
 #define LINE_MAX 256
 
-int main()
+char *CURSOR = 0;
+
+void help()
 {
-	char line[LINE_MAX] = {0};
-	while(fgets(line,LINE_MAX,stdin) != NULL) {
-		puts(line);
+	printf("Welcome to freeCompute!\n");
+}
+
+/*
+Statement:
+	Expression
+
+Expression:
+	Term
+	Expression + Term
+	Expression - Term
+
+Term:
+	Primary
+	Term * Primary
+	Term / Primary
+
+Primary:
+	Number
+	( Expression )
+	- Primary
+	+ Primary
+
+Number:
+	float
+*/
+void processOneLine()
+{
+	
+}
+
+int main(int argc, char*argv[])
+{
+	if (1 == argc){
+		char *line = (char*)malloc(LINE_MAX);
+		help();
+		printf(">>>");
+		while(fgets(line,LINE_MAX,stdin) != NULL) {
+			CURSOR = line;
+			processOneLine();
+			printf(">>>");
+		}
 	}
 	return 0;
 }
