@@ -1,5 +1,5 @@
 /*************************************************************************
-	> File Name: lex.cc
+	> File Name: lex.c
 	> Author: ellochen
 	> Mail: god_mode@yeah.net
 	> Created Time: Mon Apr 29 21:57:57 2013
