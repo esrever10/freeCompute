@@ -28,33 +28,67 @@ Primary:
 	+ Primary
 
 Number:
-	float
+	double
 */
 
 extern char *CURSOR;
 
 static double primary()
 {
-
+	Token token = getNextToken();
+	if (TOKEN_DOUBLECONST == token.type) {
+		return token.var.d;
+	}else if (TOKEN_LPAREN == token.type) {
+		double var = expression();
+		token = getNextToken();
+		if (TOKEN_RPAREN == token.type) {
+			return var;
+		}else {
+			printf("括号不匹配\n");
+			return -1;
+		}
+	}else if (TOKEN_PLUS == token.type) {
+		return primary();
+	}else if (TOKEN_MINUS == token.type) {
+		return -primary();
+	}
 }
 
 static double term()
 {
-
+	double var = primary();
+	Token token = getNextToken();
+	while(1) {
+		if (TOKEN_STAR == token.type) {
+			var *= primary();
+			token = getNextToken();
+		}else if (TOKEN_SLASH == token.type) {
+			double temp = primary();
+			if (0 == temp) {
+				printf("除数不能为0\n");
+				return -1;
+			}else {
+				var /= temp;
+			}
+			token = getNextToken();
+		}else if (TOKEN_NEWLINE == token.type) {
+			break;
+		}
+	}
 }
 
 static double expression()
 {
 	double var = term();
-	int tokenId = getNextToken();
+	Token token = getNextToken();
 	while(1) {
-		if (TOKEN_PLUS == tokenId){
+		if (TOKEN_PLUS == token.type){
 			var += term();
-			tokenId = getNextToken();
-		}else if (TOKEN_MINUS == tokenId) {
+			token = getNextToken();
+		}else if (TOKEN_MINUS == token.type) {
 			var -= term();
-			tokenId = getNextToken();
-		}else if (TOKEN_NEWLINE == tokenId) {
+			token = getNextToken();
+		}else if (TOKEN_NEWLINE == token.type) {
 			break;
 		}
 	}

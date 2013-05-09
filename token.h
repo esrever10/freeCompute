@@ -7,16 +7,33 @@
 #ifndef _TOKEN_H_
 #define _TOKEN_H_
 
-typedef enum{
-	TOKEN_NUM,
+enum TOKENID{
+//操作符
 	TOKEN_PLUS,
 	TOKEN_MINUS,
 	TOKEN_STAR,
 	TOKEN_SLASH,
+
+//标点符号
 	TOKEN_LPAREN,
 	TOKEN_RPAREN,
 	TOKEN_NEWLINE,
+	
+//常量
+	TOKEN_DOUBLECONST,
+	TOKEN_INTCONST,
+	TOKEN_STRCONST,
+};
 
-}TOKENID;
+union TokenVar{
+	int i;
+	double d;
+	void *p;
+};
+
+struct Token{
+	union TokenVar var;
+	enum TOKENID type; 
+};
 
 #endif
