@@ -4,11 +4,14 @@
 	> Mail: god_mode@yeah.net
 	> Created Time: Mon Apr 29 21:57:57 2013
  ************************************************************************/
+#include <stdlib.h>
+#include <stdio.h>
 #include "token.h"
 #include "lex.h"
 typedef struct Token (*Matcher)(void);
 extern char* CURSOR;
-static Matcher matchers[256];
+#define END_OF_FILE  255
+static Matcher matchers[END_OF_FILE+1];
 
 static struct Token matchInt(void)
 {
@@ -78,20 +81,69 @@ static struct Token matchSlash(void)
 	return token;
 }
 
+static struct Token matchBadChar(void)
+{
+	printf("无法识别的字符:%c\n",*CURSOR);
+	exit(0);
+}
+
+static struct Token matchLineEnd(void)
+{
+	CURSOR += 1;
+	struct Token token;
+	token.type = TOKEN_LINEEND;
+	return token;
+}
+
+static struct Token matchLparen(void)
+{
+	CURSOR += 1;
+	struct Token token;
+	token.type = TOKEN_LPAREN;
+	return token;
+}
+
+static struct Token matchRparen(void)
+{
+	CURSOR += 1;
+	struct Token token;
+	token.type = TOKEN_RPAREN;
+	return token;
+}
+
 void InitLexer(void)
 {
-	int c;
-	for(c = '0'; c <= '9'; ++c){
-		matchers[c] = matchDouble;
+	int i;
+	for (i = 0; i < END_OF_FILE + 1; i++)
+	{
+		if (IsDigit(i))
+		{
+			matchers[i] = matchDouble;
+		}
+		else
+		{
+			matchers[i] = matchBadChar;
+		}
 	}
-
+	matchers['\0'] = matchLineEnd;
 	matchers['+'] = matchPlus;
 	matchers['-'] = matchMinus;
-	matchers['*'] = matchMinus;
-	matchers['/'] = matchMinus;
+	matchers['*'] = matchStar;
+	matchers['/'] = matchSlash;
+	matchers['('] = matchLparen;
+	matchers[')'] = matchRparen;
+}
+
+static void SkipWhiteSpace(void)
+{
+	while (*CURSOR == '\t' || *CURSOR == '\v' || *CURSOR == '\f' || *CURSOR == ' ' ||
+	       *CURSOR == '\r' || *CURSOR == '\n') {
+			   CURSOR += 1;
+	}
 }
 
 struct Token getNextToken()
 {
+	SkipWhiteSpace();
 	return (matchers[*CURSOR])();	
 }

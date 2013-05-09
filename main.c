@@ -6,6 +6,7 @@
  ************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "parser.h"
 
 #define LINE_MAX 256
@@ -32,6 +33,7 @@ int main(int argc, char*argv[])
 		while(fgets(line,LINE_MAX,stdin) != NULL) {
 			CURSOR = line;
 			processOneLine();
+			memset(line,0,strlen(line));
 			printf(">>>");
 		}
 	}

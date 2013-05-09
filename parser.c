@@ -37,6 +37,7 @@ extern char *CURSOR;
 static double expression();
 static double primary()
 {
+	char *back = CURSOR;
 	struct Token token = getNextToken();
 	if (TOKEN_DOUBLECONST == token.type) {
 		return token.var.d;
@@ -46,19 +47,23 @@ static double primary()
 		if (TOKEN_RPAREN == token.type) {
 			return var;
 		}else {
-			printf("括号不匹配\n");
+			printf("括号不匹配,错误字符:%d\n",token.type);
 			return -1;
 		}
 	}else if (TOKEN_PLUS == token.type) {
 		return primary();
 	}else if (TOKEN_MINUS == token.type) {
 		return -primary();
+	}else {
+		CURSOR = back;
+		return 1;
 	}
 }
 
 static double term()
 {
 	double var = primary();
+	char *back = CURSOR;
 	struct Token token = getNextToken();
 	while(1) {
 		if (TOKEN_STAR == token.type) {
@@ -73,15 +78,20 @@ static double term()
 				var /= temp;
 			}
 			token = getNextToken();
-		}else if (TOKEN_NEWLINE == token.type) {
+		}else if (TOKEN_LINEEND == token.type) {
+			break;
+		}else {
+			CURSOR = back;
 			break;
 		}
 	}
+	return var;
 }
 
 static double expression()
 {
 	double var = term();
+	char *back = CURSOR;
 	struct Token token = getNextToken();
 	while(1) {
 		if (TOKEN_PLUS == token.type){
@@ -90,8 +100,11 @@ static double expression()
 		}else if (TOKEN_MINUS == token.type) {
 			var -= term();
 			token = getNextToken();
-		}else if (TOKEN_NEWLINE == token.type) {
+		}else if (TOKEN_LINEEND == token.type) {
 			break;
+		}else {
+			CURSOR = back;
+			return var;
 		}
 	}
 	return var;
