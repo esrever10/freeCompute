@@ -8,29 +8,73 @@
 typedef int (*Matcher)(void);
 extern char* CURSOR;
 static Matcher matchers[256];
-static int matchNum(void)
+
+static Token matchInt(void)
 {
-	
+	int i = 0;
+	char *start = CURSOR;
+	CURSOR += 1;
+	while (IsDigit(*CURSOR)) {
+		CURSOR += 1;
+	}
+	i = atoi(start);
+	Token token;
+	token.var.i = i;
+	token.type = TOKEN_INTCONST;
+	return token;
 }
 
-static int matchPlus(void)
+static Token matchDouble(void)
 {
-	
+	double d = 0;
+	char *start = CURSOR;
+	CURSOR += 1;
+	while (IsDigit(*CURSOR)) {
+		CURSOR += 1;
+	}
+	if ('.' == *CURSOR) {
+		CURSOR += 1;
+		while (IsDigit(*CURSOR)) {
+			CURSOR += 1;
+		}	
+	}
+	d = strtod(start,NULL);
+	Token token;
+	token.var.d = d;
+	token.type = TOKEN_DOUBLECONST;
+	return token;
 }
 
-static int matchMinus(void)
+static Token matchPlus(void)
 {
-	
+	CURSOR += 1;
+	Token token;
+	token.type = TOKEN_PLUS;
+	return token;
 }
 
-static int matchStar(void)
+static Token matchMinus(void)
 {
-	
+	CURSOR += 1;
+	Token token;
+	token.type = TOKEN_MINUS;
+	return token;
 }
 
-static int matchSlash(void)
+static Token matchStar(void)
 {
+	CURSOR += 1;
+	Token token;
+	token.type = TOKEN_STAR;
+	return token;
+}
 
+static Token matchSlash(void)
+{
+	CURSOR += 1;
+	Token token;
+	token.type = TOKEN_SLASH;
+	return token;
 }
 
 void InitLexer(void)
@@ -39,13 +83,14 @@ void InitLexer(void)
 	for(c = '0'; c <= '9'; ++c){
 		matchers[c] = matchNum;
 	}
+
 	matchers['+'] = matchPlus;
 	matchers['-'] = matchMinus;
 	matchers['*'] = matchMinus;
 	matchers['/'] = matchMinus;
 }
 
-int getNextToken()
+Token getNextToken()
 {
 	return (matchers[*CURSOR])();	
 }
