@@ -5,11 +5,12 @@
 	> Created Time: Mon Apr 29 21:57:57 2013
  ************************************************************************/
 #include "token.h"
-typedef int (*Matcher)(void);
+#include "lex.h"
+typedef struct Token (*Matcher)(void);
 extern char* CURSOR;
 static Matcher matchers[256];
 
-static Token matchInt(void)
+static struct Token matchInt(void)
 {
 	int i = 0;
 	char *start = CURSOR;
@@ -18,13 +19,13 @@ static Token matchInt(void)
 		CURSOR += 1;
 	}
 	i = atoi(start);
-	Token token;
+	struct Token token;
 	token.var.i = i;
 	token.type = TOKEN_INTCONST;
 	return token;
 }
 
-static Token matchDouble(void)
+static struct Token matchDouble(void)
 {
 	double d = 0;
 	char *start = CURSOR;
@@ -38,41 +39,41 @@ static Token matchDouble(void)
 			CURSOR += 1;
 		}	
 	}
-	d = strtod(start,NULL);
-	Token token;
+	d = strtod(start,0);
+	struct Token token;
 	token.var.d = d;
 	token.type = TOKEN_DOUBLECONST;
 	return token;
 }
 
-static Token matchPlus(void)
+static struct Token matchPlus(void)
 {
 	CURSOR += 1;
-	Token token;
+	struct Token token;
 	token.type = TOKEN_PLUS;
 	return token;
 }
 
-static Token matchMinus(void)
+static struct Token matchMinus(void)
 {
 	CURSOR += 1;
-	Token token;
+	struct Token token;
 	token.type = TOKEN_MINUS;
 	return token;
 }
 
-static Token matchStar(void)
+static struct Token matchStar(void)
 {
 	CURSOR += 1;
-	Token token;
+	struct Token token;
 	token.type = TOKEN_STAR;
 	return token;
 }
 
-static Token matchSlash(void)
+static struct Token matchSlash(void)
 {
 	CURSOR += 1;
-	Token token;
+	struct Token token;
 	token.type = TOKEN_SLASH;
 	return token;
 }
@@ -81,7 +82,7 @@ void InitLexer(void)
 {
 	int c;
 	for(c = '0'; c <= '9'; ++c){
-		matchers[c] = matchNum;
+		matchers[c] = matchDouble;
 	}
 
 	matchers['+'] = matchPlus;
@@ -90,7 +91,7 @@ void InitLexer(void)
 	matchers['/'] = matchMinus;
 }
 
-Token getNextToken()
+struct Token getNextToken()
 {
 	return (matchers[*CURSOR])();	
 }

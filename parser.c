@@ -4,6 +4,7 @@
 	> Mail: god_mode@yeah.net
 	> Created Time: Wed May  8 23:24:27 2013
  ************************************************************************/
+#include <stdio.h>
 #include "parser.h"
 #include "lex.h"
 #include "token.h"
@@ -33,9 +34,10 @@ Number:
 
 extern char *CURSOR;
 
+static double expression();
 static double primary()
 {
-	Token token = getNextToken();
+	struct Token token = getNextToken();
 	if (TOKEN_DOUBLECONST == token.type) {
 		return token.var.d;
 	}else if (TOKEN_LPAREN == token.type) {
@@ -57,7 +59,7 @@ static double primary()
 static double term()
 {
 	double var = primary();
-	Token token = getNextToken();
+	struct Token token = getNextToken();
 	while(1) {
 		if (TOKEN_STAR == token.type) {
 			var *= primary();
@@ -80,7 +82,7 @@ static double term()
 static double expression()
 {
 	double var = term();
-	Token token = getNextToken();
+	struct Token token = getNextToken();
 	while(1) {
 		if (TOKEN_PLUS == token.type){
 			var += term();

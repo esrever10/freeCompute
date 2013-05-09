@@ -16,6 +16,6 @@
 
 void InitLexer(void);
 
-int getNextToken();
+struct Token getNextToken();
 
 #endif
