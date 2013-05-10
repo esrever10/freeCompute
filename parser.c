@@ -43,6 +43,7 @@ static double primary()
 		return token.var.d;
 	}else if (TOKEN_LPAREN == token.type) {
 		double var = expression();
+		back = CURSOR;
 		token = getNextToken();
 		if (TOKEN_RPAREN == token.type) {
 			return var;
@@ -68,6 +69,7 @@ static double term()
 	while(1) {
 		if (TOKEN_STAR == token.type) {
 			var *= primary();
+			back = CURSOR;
 			token = getNextToken();
 		}else if (TOKEN_SLASH == token.type) {
 			double temp = primary();
@@ -77,6 +79,7 @@ static double term()
 			}else {
 				var /= temp;
 			}
+			back = CURSOR;
 			token = getNextToken();
 		}else if (TOKEN_LINEEND == token.type) {
 			break;
@@ -96,9 +99,11 @@ static double expression()
 	while(1) {
 		if (TOKEN_PLUS == token.type){
 			var += term();
+			back = CURSOR;
 			token = getNextToken();
 		}else if (TOKEN_MINUS == token.type) {
 			var -= term();
+			back = CURSOR;
 			token = getNextToken();
 		}else if (TOKEN_LINEEND == token.type) {
 			break;
