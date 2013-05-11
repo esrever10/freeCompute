@@ -6,8 +6,10 @@
  ************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "token.h"
 #include "lex.h"
+#include "var.h"
 typedef struct Token (*Matcher)(void);
 extern char* CURSOR;
 #define END_OF_FILE  255
@@ -28,7 +30,7 @@ static struct Token matchInt(void)
 	return token;
 }
 
-static struct Token matchDouble(void)
+static struct Token matchDouble()
 {
 	double d = 0;
 	char *start = CURSOR;
@@ -81,10 +83,17 @@ static struct Token matchSlash(void)
 	return token;
 }
 
-static struct Token matchBadChar(void)
+static struct Token matchChar(void)
 {
-	printf("无法识别的字符:%c\n",*CURSOR);
-	exit(0);
+	return varEval();	
+	/*
+	struct Token token;
+	token.type = TOKEN_DOUBLECONST;
+	token.var.d = 1.0;
+	return token;
+	*/
+	//printf("无法识别的字符:%c\n",*CURSOR);
+	//exit(0);
 }
 
 static struct Token matchLineEnd(void)
@@ -122,7 +131,7 @@ void InitLexer(void)
 		}
 		else
 		{
-			matchers[i] = matchBadChar;
+			matchers[i] = matchChar;
 		}
 	}
 	matchers['\0'] = matchLineEnd;

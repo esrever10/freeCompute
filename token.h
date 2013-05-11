@@ -23,6 +23,8 @@ enum TOKENID{
 	TOKEN_DOUBLECONST,
 	TOKEN_INTCONST,
 	TOKEN_STRCONST,
+//invalid
+	TOKEN_INVALID,
 };
 
 union TokenVar{

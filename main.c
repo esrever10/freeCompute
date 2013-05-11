@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parser.h"
+#include "var.h"
 
 #define LINE_MAX 256
 
@@ -25,6 +26,8 @@ void processOneLine()
 
 int main(int argc, char*argv[])
 {
+	v_root = NodeIni();
+
 	if (1 == argc){
 		InitLexer();
 		char *line = (char*)malloc(LINE_MAX);
@@ -37,5 +40,6 @@ int main(int argc, char*argv[])
 			printf(">>>");
 		}
 	}
+	free(v_root);
 	return 0;
 }
