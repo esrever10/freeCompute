@@ -13,6 +13,7 @@ enum TOKENID{
 	TOKEN_MINUS,
 	TOKEN_STAR,
 	TOKEN_SLASH,
+	TOKEN_EQUAL,
 
 //标点符号
 	TOKEN_LPAREN,
@@ -23,12 +24,15 @@ enum TOKENID{
 	TOKEN_DOUBLECONST,
 	TOKEN_INTCONST,
 	TOKEN_STRCONST,
+	
+//标识符
+	TOKEN_ID,
 };
 
 union TokenVar{
 	int i;
 	double d;
-	void *p;
+	char *p;
 };
 
 struct Token{

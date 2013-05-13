@@ -6,6 +6,7 @@
  ************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "token.h"
 #include "lex.h"
 typedef struct Token (*Matcher)(void);
@@ -111,17 +112,38 @@ static struct Token matchRparen(void)
 	return token;
 }
 
+static struct Token matchIdentifier(void)
+{
+	char *start = CURSOR;
+	CURSOR += 1;
+	while (IsLetterOrDigit(*CURSOR)) {
+		CURSOR += 1;
+	}
+	struct Token token;
+	token.type = TOKEN_ID;
+	char *tokenVar = (char*)malloc(CURSOR - start);
+	strncpy(tokenVar,start,CURSOR - start);
+	token.var.p = (void*)tokenVar;
+	return token;
+}
+
+static struct Token matchEqual(void)
+{
+	CURSOR += 1;
+	struct Token token;
+	token.type = TOKEN_EQUAL;
+	return token;
+}
+
 void InitLexer(void)
 {
 	int i;
-	for (i = 0; i < END_OF_FILE + 1; i++)
-	{
-		if (IsDigit(i))
-		{
+	for (i = 0; i < END_OF_FILE + 1; i++) {
+		if (IsDigit(i)) {
 			matchers[i] = matchDouble;
-		}
-		else
-		{
+		}else if (IsLetterOrDigit(i)) {
+			matchers[i] = matchIdentifier;
+		}else {
 			matchers[i] = matchBadChar;
 		}
 	}
@@ -132,6 +154,7 @@ void InitLexer(void)
 	matchers['/'] = matchSlash;
 	matchers['('] = matchLparen;
 	matchers[')'] = matchRparen;
+	matchers['='] = matchEqual;
 }
 
 static void SkipWhiteSpace(void)

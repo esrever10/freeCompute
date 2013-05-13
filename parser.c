@@ -10,6 +10,7 @@
 #include "token.h"
 /*
 Statement:
+	Identifier = Expression
 	Expression
 
 Expression:
@@ -117,5 +118,10 @@ static double expression()
 
 double statement()
 {
-	return expression();
+	struct Token token = getNextToken();
+	if (TOKEN_ID == token.type && TOKEN_EQUAL == getNextToken().type) {
+			double var = expression();
+	}else { 
+		return expression();
+	}
 }
