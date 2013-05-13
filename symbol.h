@@ -8,7 +8,7 @@
 #define _SYMBOL_H_
 
 #include "token.h"
-
+//我知道用链表写弱爆了,不要鄙视我,待我有空改成double array trie!!!
 #define MAX_LEN 256
 struct Symbol{
 	char name[MAX_LEN];
