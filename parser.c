@@ -118,10 +118,12 @@ static double expression()
 
 double statement()
 {
+	char *back = CURSOR;
 	struct Token token = getNextToken();
 	if (TOKEN_ID == token.type && TOKEN_EQUAL == getNextToken().type) {
 			double var = expression();
 	}else { 
+		CURSOR = back;
 		return expression();
 	}
 }
