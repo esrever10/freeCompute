@@ -141,7 +141,7 @@ void InitLexer(void)
 	for (i = 0; i < END_OF_FILE + 1; i++) {
 		if (IsDigit(i)) {
 			matchers[i] = matchDouble;
-		}else if (IsLetterOrDigit(i)) {
+		}else if (IsLetter(i)) {
 			matchers[i] = matchIdentifier;
 		}else {
 			matchers[i] = matchBadChar;
