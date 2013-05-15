@@ -4,6 +4,7 @@
 	> Mail: god_mode@yeah.net
 	> Created Time: Wed May 15 22:35:16 2013
  ************************************************************************/
+//the implement refers to <<Mastering Algorithms with C>>
 #include <stdlib.h>
 #include <string.h>
 #include "list.h"
