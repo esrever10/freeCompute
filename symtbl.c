@@ -18,7 +18,7 @@ int symtblInit(SymTbl *tbl, int buckets, int (*h)(const void *key),
 	}
 	tbl->buckets = buckets;
 	for (int i = 0; i < tbl->buckets; ++i) {
-		list_init(&tbl->table[i], destroy);
+		listInit(&tbl->table[i], destroy);
 	}
 	tbl->h = h;
 	tbl->match = match;

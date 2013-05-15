@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parser.h"
+#include "lex.h"
 
 #define LINE_MAX 256
 
