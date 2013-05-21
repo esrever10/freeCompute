@@ -14,21 +14,6 @@ char *CURSOR = 0;
 #define END_OF_FILE  255
 static Matcher matchers[END_OF_FILE+1];
 
-static struct Token matchInt(void)
-{
-	int i = 0;
-	char *start = CURSOR;
-	CURSOR += 1;
-	while (IsDigit(*CURSOR)) {
-		CURSOR += 1;
-	}
-	i = atoi(start);
-	struct Token token;
-	token.var.i = i;
-	token.type = TOKEN_INTCONST;
-	return token;
-}
-
 static struct Token matchDouble(void)
 {
 	double d = 0;

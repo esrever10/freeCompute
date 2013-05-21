@@ -5,6 +5,8 @@
 	> Created Time: Wed May  8 23:24:27 2013
  ************************************************************************/
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "parser.h"
 #include "lex.h"
 #include "token.h"
@@ -120,9 +122,10 @@ static double expression()
 
 #define BUCKET_NUM 256
 
-static int hash(const void *key)
+static int hash(const void *dat)
 {
-	const char *ptr = key;
+	const struct Token *token = (struct Token *)dat;
+	const char *ptr = (const char *)token->var.p;
 	unsigned int val = 0;
 
 	while (*ptr != '\0') {
@@ -138,14 +141,18 @@ static int hash(const void *key)
 	return val % BUCKET_NUM; 
 }
 
-static int match(const void *key1, const void *key2)
+static int match(const void *dat1, const void *dat2)
 {
-
+	const struct Token *token1 = (struct Token *)dat1;
+	const struct Token *token2 = (struct Token *)dat2;
+	return strcmp(token1->var.p, token2->var.p);
 }
 
-static void destroy(void *data)
+static void destroy(void *dat)
 {
-
+	struct Token *token = (struct Token *)dat;
+	free(token->var.p);
+	free(token);
 }
 
 double statement()

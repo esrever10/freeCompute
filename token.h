@@ -30,7 +30,6 @@ enum TOKENID{
 };
 
 union TokenVar{
-	int i;
 	double d;
 	char *p;
 };

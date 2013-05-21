@@ -37,6 +37,7 @@ int main(int argc, char*argv[])
 			memset(line,0,strlen(line));
 			printf(">>>");
 		}
+		free(line);
 		parserDestroy();
 	}
 	return 0;

@@ -13,8 +13,8 @@
 typedef struct _SymTbl {
 	int buckets;
 	
-	int (*h)(const void *key);
-	int (*match)(const void *key1, const void *key2);
+	int (*h)(const void *dat);
+	int (*match)(const void *dat1, const void *dat2);
 	void (*destroy)(void *dat);
 
 	int size;
@@ -23,8 +23,8 @@ typedef struct _SymTbl {
 
 extern SymTbl *SYMTBL;
 
-int symtblInit(int buckets, int (*h)(const void *key),
-	int (*match)(const void *key1, const void *key2),
+int symtblInit(int buckets, int (*h)(const void *dat),
+	int (*match)(const void *dat1, const void *dat2),
 	void (*destroy)(void *dat));
 
 void symtblDestroy();
