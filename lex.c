@@ -106,9 +106,9 @@ static struct Token matchIdentifier(void)
 	}
 	struct Token token;
 	token.type = TOKEN_ID;
-	char *tokenVar = (char*)malloc(CURSOR - start);
-	strncpy(tokenVar,start,CURSOR - start);
-	token.var.p = (void*)tokenVar;
+	char *pTokenVar = (char*)malloc(CURSOR - start);
+	strncpy(pTokenVar,start,CURSOR - start);
+	token.var.p = (void*)pTokenVar;
 	return token;
 }
 

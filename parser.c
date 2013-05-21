@@ -27,6 +27,7 @@ Term:
 	Term / Primary
 
 Primary:
+	Identifier
 	Number
 	( Expression )
 	- Primary
@@ -54,12 +55,21 @@ static double primary()
 			return var;
 		}else {
 			printf("括号不匹配,错误字符:%d\n",token.type);
-			return -1;
+			exit(0);
 		}
 	}else if (TOKEN_PLUS == token.type) {
 		return primary();
 	}else if (TOKEN_MINUS == token.type) {
 		return -primary();
+	}else if (TOKEN_ID == token.type) {
+		Symbol *pSymbol = (Symbol *)malloc(sizeof(Symbol));
+		pSymbol->key = token.var.p;
+		if (symtblLookup((void **)&pSymbol) < 0) {
+			printf("\n变量未定义\n");
+			exit(0);
+		}else {
+			return pSymbol->var;
+		}
 	}else {
 		CURSOR = back;
 		return 1;
@@ -124,8 +134,8 @@ static double expression()
 
 static int hash(const void *dat)
 {
-	const struct Token *token = (struct Token *)dat;
-	const char *ptr = (const char *)token->var.p;
+	const Symbol *pSymbol = (Symbol *)dat;
+	const char *ptr = (const char *)pSymbol->key;
 	unsigned int val = 0;
 
 	while (*ptr != '\0') {
@@ -143,16 +153,16 @@ static int hash(const void *dat)
 
 static int match(const void *dat1, const void *dat2)
 {
-	const struct Token *token1 = (struct Token *)dat1;
-	const struct Token *token2 = (struct Token *)dat2;
-	return strcmp(token1->var.p, token2->var.p);
+	const Symbol *pSymbol1 = (Symbol *)dat1;
+	const Symbol *pSymbol2 = (Symbol *)dat2;
+	return strcmp(pSymbol1->key, pSymbol2->key);
 }
 
 static void destroy(void *dat)
 {
-	struct Token *token = (struct Token *)dat;
-	free(token->var.p);
-	free(token);
+	Symbol *pSymbol = (Symbol *)dat;
+	free(pSymbol->key);
+	free(pSymbol);
 }
 
 double statement()
@@ -161,7 +171,13 @@ double statement()
 	struct Token token = getNextToken();
 	if (TOKEN_ID == token.type && TOKEN_EQUAL == getNextToken().type) {
 			double var = expression();
-			
+			Symbol *pSymbol = (Symbol *)malloc(sizeof(Symbol));
+			pSymbol->var = var;
+			pSymbol->key = token.var.p;
+			if (symtblInsert((void *)pSymbol) < 0) {
+				symtblUpdate((void *)pSymbol);
+			}
+			return var;
 	}else { 
 		CURSOR = back;
 		return expression();

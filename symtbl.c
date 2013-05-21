@@ -52,6 +52,20 @@ int symtblInsert(const void *data)
 	return retval;
 }
 
+int symtblUpdate(const void *data)
+{
+	int bucket = SYMTBL->h(data) % SYMTBL->buckets;
+	for (ListElmt *element = listHead(&SYMTBL->table[bucket]);
+			element != NULL;
+			element = listNext(element)) {
+		if (SYMTBL->match(data, listData(element))) {
+			memcpy(listData(element), data, sizeof(Symbol));
+			return 0;
+		}
+	}
+	return -1;
+}
+
 int symtblRemove(void **data)
 {
 	int bucket = SYMTBL->h(*data) % SYMTBL->buckets;

@@ -21,6 +21,13 @@ typedef struct _SymTbl {
 	List *table;
 }SymTbl;
 
+#define KEY_MAX 256
+
+typedef struct _Symbol{
+	double var;
+	char *key;
+}Symbol;
+
 extern SymTbl *SYMTBL;
 
 int symtblInit(int buckets, int (*h)(const void *dat),
@@ -30,6 +37,8 @@ int symtblInit(int buckets, int (*h)(const void *dat),
 void symtblDestroy();
 
 int symtblInsert(const void *data);
+
+int symtblUpdate(const void *data);
 
 int symtblRemove(void **data);
 
