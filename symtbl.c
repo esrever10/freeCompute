@@ -9,55 +9,27 @@
 #include <string.h>
 #include "symtbl.h"
 
-#define BUCKET_NUM 256
-
 SymTbl * SYMTBL = NULL;
 
-int hash(const void *key)
+int symtblInit(int buckets, int (*h)(const void *key),
+	int (*match)(const void *key1, const void *key2),
+	void (*destroy)(void *dat))
 {
-	const char *ptr = key;
-	unsigned int val = 0;
-
-	while (*ptr != '\0') {
-		unsigned int tmp;
-		val = (val << 4) + (*ptr);
-
-		if (tmp = (val & 0xf0000000)) {
-			val = val ^ (tmp >> 24);
-			val = val ^ tmp;
-		}
-		ptr++;
-	}
-	return val % BUCKET_NUM; 
-}
-
-int match(const void *key1, const void *key2)
-{
-
-}
-
-void destroy(void *data)
-{
-
-}
-
-int symtblInit()
-{
-	if ((SYMTBL->table = (List *)malloc(BUCKET_NUM * sizeof(List))) == NULL) {
+	if ((SYMTBL->table = (List *)malloc(buckets * sizeof(List))) == NULL) {
 		return -1;
 	}
-	SYMTBL->buckets = BUCKET_NUM;
+	SYMTBL->buckets = buckets;
 	for (int i = 0; i < SYMTBL->buckets; ++i) {
 		listInit(&SYMTBL->table[i], destroy);
 	}
-	SYMTBL->h = hash;
+	SYMTBL->h = h;
 	SYMTBL->match = match;
 	SYMTBL->destroy = destroy;
 	SYMTBL->size = 0;
 	return 0;
 }
 
-void symtblDestory()
+void symtblDestroy()
 {
 	for (int i = 0; i < SYMTBL->buckets; ++i) {
 		listDestory(&SYMTBL->table[i]);

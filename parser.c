@@ -8,6 +8,7 @@
 #include "parser.h"
 #include "lex.h"
 #include "token.h"
+#include "symtbl.h"
 /*
 Statement:
 	Identifier = Expression
@@ -34,6 +35,7 @@ Number:
 */
 
 extern char *CURSOR;
+extern SymTbl *SYMTBL;
 
 static double expression();
 static double primary()
@@ -116,14 +118,55 @@ static double expression()
 	return var;
 }
 
+#define BUCKET_NUM 256
+
+static int hash(const void *key)
+{
+	const char *ptr = key;
+	unsigned int val = 0;
+
+	while (*ptr != '\0') {
+		unsigned int tmp;
+		val = (val << 4) + (*ptr);
+
+		if (tmp = (val & 0xf0000000)) {
+			val = val ^ (tmp >> 24);
+			val = val ^ tmp;
+		}
+		ptr++;
+	}
+	return val % BUCKET_NUM; 
+}
+
+static int match(const void *key1, const void *key2)
+{
+
+}
+
+static void destroy(void *data)
+{
+
+}
+
 double statement()
 {
 	char *back = CURSOR;
 	struct Token token = getNextToken();
 	if (TOKEN_ID == token.type && TOKEN_EQUAL == getNextToken().type) {
 			double var = expression();
+			
 	}else { 
 		CURSOR = back;
 		return expression();
 	}
+}
+
+int parserInit()
+{
+	symtblInit(BUCKET_NUM, hash, match, destroy);
+}
+
+int parserDestroy()
+{
+	symtblDestroy();
 }

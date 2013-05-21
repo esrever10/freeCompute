@@ -27,6 +27,7 @@ int main(int argc, char*argv[])
 {
 	if (1 == argc){
 		lexerInit();
+		parserInit();
 		char *line = (char*)malloc(LINE_MAX);
 		help();
 		printf(">>>");
@@ -36,6 +37,7 @@ int main(int argc, char*argv[])
 			memset(line,0,strlen(line));
 			printf(">>>");
 		}
+		parserDestroy();
 	}
 	return 0;
 }

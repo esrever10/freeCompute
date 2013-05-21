@@ -23,9 +23,11 @@ typedef struct _SymTbl {
 
 extern SymTbl *SYMTBL;
 
-void InitSymtbl();
+int symtblInit(int buckets, int (*h)(const void *key),
+	int (*match)(const void *key1, const void *key2),
+	void (*destroy)(void *dat));
 
-void symtblDestory();
+void symtblDestroy();
 
 int symtblInsert(const void *data);
 

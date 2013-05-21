@@ -9,4 +9,8 @@
 
 double statement();
 
+int parserInit();
+
+int parserDestroy();
+
 #endif
