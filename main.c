@@ -9,10 +9,9 @@
 #include <string.h>
 #include "parser.h"
 #include "lex.h"
+#include "symtbl.h"
 
 #define LINE_MAX 256
-
-char *CURSOR = 0;
 
 void help()
 {
@@ -27,7 +26,7 @@ void processOneLine()
 int main(int argc, char*argv[])
 {
 	if (1 == argc){
-		InitLexer();
+		lexerInit();
 		char *line = (char*)malloc(LINE_MAX);
 		help();
 		printf(">>>");

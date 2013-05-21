@@ -14,7 +14,9 @@
 #define IsLetterOrDigit(c) (IsLetter(c) || IsDigit(c))
 #define ToUpper(c)		   (c & ~0x20)
 
-void InitLexer(void);
+extern char *CURSOR;
+
+void lexerInit(void);
 
 struct Token getNextToken();
 

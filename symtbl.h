@@ -21,18 +21,18 @@ typedef struct _SymTbl {
 	List *table;
 }SymTbl;
 
-int symtblInit(SymTbl *tbl, int buckets, int (*h)(const void *key), 
-		int(*match)(const void *key1, const void *key2),
-		void (*destroy)(void *data));
+extern SymTbl *SYMTBL;
 
-void symtblDestory(SymTbl *tbl);
+void InitSymtbl();
 
-int symtblInsert(SymTbl *tbl, const void *data);
+void symtblDestory();
 
-int symtblRemove(SymTbl *tbl, void **data);
+int symtblInsert(const void *data);
 
-int symtblLookup(const SymTbl *tbl, void **data);
+int symtblRemove(void **data);
 
-#define symtblSize(tbl) ((tbl)->size)
+int symtblLookup(void **data);
+
+#define symtblSize() ((SYMTBL)->size)
 
 #endif

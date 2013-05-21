@@ -10,7 +10,7 @@
 #include "token.h"
 #include "lex.h"
 typedef struct Token (*Matcher)(void);
-extern char* CURSOR;
+char *CURSOR = 0;
 #define END_OF_FILE  255
 static Matcher matchers[END_OF_FILE+1];
 
@@ -135,7 +135,7 @@ static struct Token matchEqual(void)
 	return token;
 }
 
-void InitLexer(void)
+void lexerInit(void)
 {
 	int i;
 	for (i = 0; i < END_OF_FILE + 1; i++) {
