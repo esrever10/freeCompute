@@ -16,3 +16,5 @@
 *.out
 *.app
 a.out.dSYM
+
+.DS_Store
