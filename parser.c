@@ -65,7 +65,7 @@ static double primary()
 		Symbol *pSymbol = (Symbol *)malloc(sizeof(Symbol));
 		pSymbol->key = token.var.p;
 		if (symtblLookup((void **)&pSymbol) < 0) {
-			printf("\n变量未定义\n");
+			printf("变量未定义\n");
 			exit(0);
 		}else {
 			return pSymbol->var;
@@ -186,6 +186,7 @@ double statement()
 
 int parserInit()
 {
+	SYMTBL = (SymTbl *)malloc(sizeof(SymTbl));
 	symtblInit(BUCKET_NUM, hash, match, destroy);
 }
 
