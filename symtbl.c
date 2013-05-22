@@ -58,7 +58,7 @@ int symtblUpdate(const void *data)
 	for (ListElmt *element = listHead(&SYMTBL->table[bucket]);
 			element != NULL;
 			element = listNext(element)) {
-		if (SYMTBL->match(data, listData(element))) {
+		if (SYMTBL->match(data, listData(element)) == 0) {
 			memcpy(listData(element), data, sizeof(Symbol));
 			return 0;
 		}
@@ -92,7 +92,7 @@ int symtblLookup(void **data)
 	for (ListElmt *element = listHead(&SYMTBL->table[bucket]);
 			element != NULL;
 			element = listNext(element)) {
-		if (SYMTBL->match(*data, listData(element))) {
+		if (SYMTBL->match(*data, listData(element)) == 0) {
 			*data = listData(element);
 			return 0;
 		}
